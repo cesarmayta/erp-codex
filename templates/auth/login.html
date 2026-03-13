@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Ingresar | ERP Codex{% endblock %}
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 75vh;">
+  <div class="col-xl-4 col-lg-5">
+    <div class="card card-soft border-0">
+      <div class="card-body p-4 p-lg-5">
+        <div class="mb-4">
+          <span class="badge rounded-pill text-bg-secondary mb-3">ERP retail</span>
+          <h1 class="h2 mb-2">Ingresar</h1>
+          <p class="text-muted mb-0">Usa tu usuario para entrar al sistema.</p>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.username.id_for_label }}">Usuario</label>
+            {{ form.username }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="{{ form.password.id_for_label }}">Clave</label>
+            {{ form.password }}
+          </div>
+          {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+          {% endif %}
+          <button class="btn btn-primary w-100" type="submit">Entrar</button>
+        </form>
+        <div class="small text-muted mt-4">Demo actual: <strong>admin</strong> / <strong>admin123</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

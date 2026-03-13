@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Stock | ERP Codex{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Stock actual</h1>
+    <p class="text-muted mb-0">Existencias por almacen.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'stock-movement-create' %}">Nuevo movimiento</a>
+</div>
+<div class="card card-soft">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr><th>Producto</th><th>Almacen</th><th>Sucursal</th><th>Cantidad</th></tr>
+      </thead>
+      <tbody>
+        {% for snapshot in snapshots %}
+          <tr>
+            <td>{{ snapshot.product.name }}</td>
+            <td>{{ snapshot.warehouse.name }}</td>
+            <td>{{ snapshot.warehouse.branch.name }}</td>
+            <td>{{ snapshot.quantity }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4" class="text-center text-muted py-5">No hay stock cargado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

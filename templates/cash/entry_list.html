@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Movimientos de caja | ERP Codex{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3 mb-1">Movimientos de caja</h1>
+    <p class="text-muted mb-0">Ingresos y egresos manuales o por venta.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'cash-entry-create' %}">Nuevo movimiento</a>
+</div>
+<div class="card card-soft">
+  <div class="table-responsive">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr><th>Fecha</th><th>Sesion</th><th>Tipo</th><th>Descripcion</th><th>Venta</th><th class="text-end">Monto</th></tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+          <tr>
+            <td>{{ entry.created_at|date:"d/m/Y H:i" }}</td>
+            <td>#{{ entry.session_id }}</td>
+            <td>{{ entry.get_entry_type_display }}</td>
+            <td>{{ entry.description }}</td>
+            <td>{{ entry.sale.document_number|default:"-" }}</td>
+            <td class="text-end">S/ {{ entry.amount }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6" class="text-center text-muted py-5">No hay movimientos.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Sesiones de caja | ERP Codex{% endblock %}
+{% block content %}
+<div class="row g-4">
+  <div class="col-xl-4">
+    <div class="card card-soft">
+      <div class="card-body">
+        <h1 class="h4 mb-3">Abrir caja</h1>
+        <form method="post" action="{% url 'cash-session-open' %}">
+          {% csrf_token %}
+          {% for field in open_form %}
+            <div class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+              {{ field }}
+            </div>
+          {% endfor %}
+          <button class="btn btn-primary w-100" type="submit">Abrir turno</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-8">
+    <div class="card card-soft">
+      <div class="card-body">
+        <h2 class="h4 mb-3">Sesiones</h2>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr><th>Caja</th><th>Apertura</th><th>Estado</th><th>Esperado</th><th>Diferencia</th><th></th></tr>
+            </thead>
+            <tbody>
+              {% for session in sessions %}
+                <tr>
+                  <td>{{ session.cash_register.name }}</td>
+                  <td>S/ {{ session.opening_amount }}</td>
+                  <td>{{ session.get_status_display }}</td>
+                  <td>S/ {{ session.expected_amount }}</td>
+                  <td>S/ {{ session.difference_amount }}</td>
+                  <td class="text-end">
+                    {% if session.status == 'open' %}
+                      <form method="post" action="{% url 'cash-session-close' session.pk %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="number" step="0.01" name="closing_amount" class="form-control form-control-sm d-inline-block me-2" style="width: 120px" placeholder="Cierre">
+                        <button class="btn btn-sm btn-outline-danger">Cerrar</button>
+                      </form>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="6" class="text-center text-muted py-5">No hay sesiones registradas.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

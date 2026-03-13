@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Inicio | ERP Codex{% endblock %}
+{% block content %}
+<div class="row g-4 mb-4">
+  <div class="col-xl-3 col-md-6">
+    <div class="card card-soft h-100">
+      <div class="card-body">
+        <div class="text-muted small">Productos activos</div>
+        <div class="display-6 fw-semibold">{{ product_count }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="card card-soft h-100">
+      <div class="card-body">
+        <div class="text-muted small">Ventas registradas</div>
+        <div class="display-6 fw-semibold">{{ sale_count }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="card card-soft h-100">
+      <div class="card-body">
+        <div class="text-muted small">Cajas abiertas</div>
+        <div class="display-6 fw-semibold">{{ open_sessions }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-md-6">
+    <div class="card card-soft h-100">
+      <div class="card-body">
+        <div class="text-muted small">Moneda base</div>
+        <div class="display-6 fw-semibold">{{ company_info.currency_code|default:"PEN" }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card card-soft h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Accesos rapidos</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><a class="btn btn-outline-primary w-100 py-3" href="{% url 'product-list' %}">Productos</a></div>
+          <div class="col-md-6"><a class="btn btn-outline-primary w-100 py-3" href="{% url 'customer-list' %}">Clientes</a></div>
+          <div class="col-md-6"><a class="btn btn-outline-primary w-100 py-3" href="{% url 'cash-session-list' %}">Sesiones de caja</a></div>
+          <div class="col-md-6"><a class="btn btn-primary w-100 py-3" href="{% url 'pos-terminal' %}">Abrir POS</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card card-soft h-100">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Stock bajo</h2>
+        <ul class="list-group list-group-flush">
+          {% for item in low_stock %}
+            <li class="list-group-item d-flex justify-content-between px-0">
+              <span>{{ item.product.name }}</span>
+              <span class="badge text-bg-warning">{{ item.quantity }}</span>
+            </li>
+          {% empty %}
+            <li class="list-group-item px-0 text-muted">Sin alertas de stock.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
